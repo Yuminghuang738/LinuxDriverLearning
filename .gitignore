@@ -1,0 +1,12 @@
+Makefile
+Docker/
+OK3506_Linux_Source/
+build/
+*.o 
+*.ko 
+*.mod 
+*.mod.c 
+*.symvers 
+*.order 
+.*.cmd
+.tmp_versions
