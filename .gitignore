@@ -1,5 +1,5 @@
 Makefile
-Docker/
+docker/
 OK3506_Linux_Source/
 build/
 *.o 
