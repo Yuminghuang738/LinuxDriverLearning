@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     fd = open(file_path, O_RDWR);
     if (fd < 0)
     {
-        printf("can't open file: %s\n", file_path);
+        printf("can't open file: %s!\n", file_path);
         return -1;
     }
 

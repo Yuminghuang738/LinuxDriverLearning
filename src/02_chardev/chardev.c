@@ -40,7 +40,7 @@ static ssize_t char_dev_write(struct file *filp, const char __user *buf, size_t 
     }
     else 
     {
-        printk(KERN_ERR "write failed\n");
+        printk(KERN_ERR "write failed!\n");
     }
 
     return 0;
@@ -48,7 +48,8 @@ static ssize_t char_dev_write(struct file *filp, const char __user *buf, size_t 
 
 static char data[] = {"chardev driver"};
 
-static ssize_t char_dev_read(struct file *filp, char __user *buf, size_t count, loff_t *ppos)
+static ssize_t char_dev_read(struct file *filp, char __user *buf, size_t count, 
+                             loff_t *ppos)
 {
     char *vbuf = filp->private_data;
     memcpy(vbuf, data, sizeof(data));
@@ -57,7 +58,7 @@ static ssize_t char_dev_read(struct file *filp, char __user *buf, size_t count, 
     ret = copy_to_user(buf, vbuf, count);
     if (ret != 0)
     {
-        printk(KERN_ERR "read failed\n");
+        printk(KERN_ERR "read failed!\n");
     }
 
     return 0;
@@ -82,11 +83,11 @@ int minor;
 static int __init chardev_init(void)
 {
     printk(KERN_INFO "chardev init\n");
-    
+
     int ret = alloc_chrdev_region(&devno, 0, DEV_COUNT, DEV_NAME);
     if (ret < 0)
     {
-        printk(KERN_ERR "failed to alloc devno\n");
+        printk(KERN_ERR "failed to alloc devno!\n");
         goto alloc_err;
     }
 
@@ -100,42 +101,39 @@ static int __init chardev_init(void)
     ret = cdev_add(&char_dev, devno, DEV_COUNT);
     if (ret < 0)
     {
-        printk(KERN_ERR "failed to add cdev\n");
+        printk(KERN_ERR "failed to add cdev!\n");
         goto add_err;
     }
 
     class = class_create(THIS_MODULE, DEV_NAME);
     if (IS_ERR(class))
     {
-        printk(KERN_ERR "failed to add class\n");
+        printk(KERN_ERR "failed to add class!\n");
         goto class_err;
     }
 
     device = device_create(class, NULL, MKDEV(major, 0), NULL, DEV_NAME);
     if (IS_ERR(device))
     {
-        printk(KERN_ERR "failed to create device\n");
+        printk(KERN_ERR "failed to create device!\n");
         goto device_err;
     }
 
     printk(KERN_INFO "device created\n");
     return 0;
 
-    alloc_err   :
-        return ret;
-
-    add_err:
-        unregister_chrdev_region(devno, DEV_COUNT);
-        return 0;
-
+    device_err:
+        device_destroy(class, MKDEV(major, 0));
+        class_destroy(class);
+    
     class_err:
         cdev_del(&char_dev);
-        return 0;
-
-    device_err:
-        class_destroy(class);
-        device_destroy(class, MKDEV(major, 0));
-        return 0;
+    
+    add_err:
+        unregister_chrdev_region(devno, DEV_COUNT);
+        
+    alloc_err:
+        return ret;
 }
 
 static void __exit chardev_exit(void)
