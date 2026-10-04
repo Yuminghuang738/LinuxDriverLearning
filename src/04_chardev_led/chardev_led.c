@@ -100,10 +100,16 @@ static int __init chardev_init(void)
 
     iowrite32((0xF << 16) | (0x0 << 0), led_cdev[0].va_iomux);
 
-    unsigned int val = ioread32(led_cdev[0].va_dr);
+    unsigned int val = 0;
+    val = ioread32(led_cdev[0].va_ddr);
     val |= ((unsigned int)0x1 << (led_cdev[0].led_pin + 16));
     val |= ((unsigned int)0x1 << (led_cdev[0].led_pin));
     iowrite32(val, led_cdev[0].va_ddr);
+
+    val = ioread32(led_cdev[0].va_dr);
+    val |= ((unsigned int)0x1 << (led_cdev[0].led_pin + 16));
+    val |= ((unsigned int)0x1 << (led_cdev[0].led_pin));
+    iowrite32(val, led_cdev[0].va_dr);
 
     ret = alloc_chrdev_region(&devno, 0, DEV_COUNT, DEV_NAME);
     if (ret < 0) 
@@ -159,6 +165,7 @@ static int __init chardev_init(void)
 
 static void __exit chardev_exit(void)
 {
+    device_destroy(class, devno);
     class_destroy(class);
     cdev_del(&led_cdev[0].dev);
     unregister_chrdev_region(devno, DEV_COUNT);
