@@ -32,8 +32,7 @@ static ssize_t char_dev_write(struct file *filp, const char __user *buf, size_t 
 {
     char *vbuf = filp->private_data;
 
-    int ret = 0;
-    ret = copy_from_user(vbuf, buf, count);
+    int ret = copy_from_user(vbuf, buf, count);
     if (ret == 0)
     {
         printk(KERN_INFO "write data: %s\n", vbuf);
