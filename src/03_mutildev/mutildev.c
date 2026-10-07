@@ -175,5 +175,4 @@ module_init(chardev_init);
 module_exit(chardev_exit);
 
 MODULE_AUTHOR("Yuminghaung728 <Yuminghuang738@gmail.com>");
-MODULE_DESCRIPTION("a chardev");
 MODULE_LICENSE("GPL");
