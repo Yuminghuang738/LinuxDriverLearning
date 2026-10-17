@@ -1,1 +1,1 @@
-# This is my embedded linux driver learning code repo
+# My EmbeddedLinux driver learning code repo
