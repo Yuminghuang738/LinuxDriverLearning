@@ -1,0 +1,11 @@
+get_dts_info_test: get_dts_info_test {
+	compatible = "get_dts_info_test";
+	#address-cells = <1>;
+	#size-cells = <1>;
+	status = "okay";
+	led@ff940000 {
+		compatible = "fire,led_test";
+		reg = <0xff940000 0x00000004>;
+		status = "okay";
+	};
+}; 
