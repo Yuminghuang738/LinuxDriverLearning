@@ -1,0 +1,14 @@
+/* led test node */
+led_test: led_test {
+	compatible = "fire,led_test";
+	#address-cells = <1>;
+	#size-cells = <1>;
+	iomux@ff950000 {
+		reg = <0xff950000 0x00000004>;
+	};
+	led@ff940000 {
+		reg = <0xff940000 0x00000004>;
+		high-low-position = <1>;
+		led-pin = <0>;
+	};
+};
